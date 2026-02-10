@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>House Price Predictor</title>
+</head>
+<body>
+    <h2>House Price Prediction</h2>
+
+    <input id="area" type="number" placeholder="Area (sq ft)">
+    <input id="bedrooms" type="number" placeholder="Bedrooms">
+    <input id="bathrooms" type="number" placeholder="Bathrooms">
+
+    <button onclick="predict()">Predict Price</button>
+
+    <h3 id="result"></h3>
+
+<script>
+async function predict() {
+    const data = {
+        area: parseInt(document.getElementById("area").value),
+        bedrooms: parseInt(document.getElementById("bedrooms").value),
+        bathrooms: parseInt(document.getElementById("bathrooms").value)
+    };
+
+    const response = await fetch("http://127.0.0.1:8000/predict", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+    });
+
+    const result = await response.json();
+    document.getElementById("result").innerText =
+        "Estimated Price: ₹ " + result.predicted_price_lakhs + " Lakhs";
+}
+</script>
+</body>
+</html>
